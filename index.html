@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="The Davis Family of Wilmington, North Carolina.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23F7F9F8' stroke='%236E9A90' stroke-width='2'/%3E%3Ctext x='32' y='43' text-anchor='middle' font-family='Georgia,serif' font-style='italic' font-size='32' fill='%236E9A90'%3ED%3C/text%3E%3C/svg%3E">
+<link rel="preload" as="image" href="background.jpg">
+<title>The Davis Family</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..600;1,6..96,400..600&family=Jost:wght@300;400;500&display=swap">
+<style>
+  /* Layout: one quiet, centered "letterpress card" composition on a pale sea-glass wash; a single tidal line is the only flourish. */
+  :root {
+    --bg: #F7F9F8;        /* morning mist */
+    --tint: #E6EFEC;      /* sea-glass wash */
+    --ink: #1F3138;       /* Cape Fear river slate */
+    --muted: #5F7479;
+    --accent: #6E9A90;    /* marsh grass green */
+    --line: #D3DEDA;
+    --field: #FFFFFF;
+    --wash: rgba(247, 249, 248, 0.66);
+    --wash-core: rgba(247, 249, 248, 0.6);
+    --error: #A3483C;
+    --display: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+    --body: "Jost", "Futura", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #121D21; --tint: #182A2F; --ink: #E8EFEE; --muted: #9AB0B1;
+      --accent: #8FBFB3; --line: #2A3C42; --field: #0E171A; --error: #E09A8F; --wash: rgba(18, 29, 33, 0.78); --wash-core: rgba(18, 29, 33, 0.6); color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #121D21; --tint: #182A2F; --ink: #E8EFEE; --muted: #9AB0B1;
+    --accent: #8FBFB3; --line: #2A3C42; --field: #0E171A; --error: #E09A8F; --wash: rgba(18, 29, 33, 0.78); --wash-core: rgba(18, 29, 33, 0.6); color-scheme: dark;
+  }
+
+  html, body { height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-weight: 300;
+    font-size: 1rem;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Washed-out marsh photo behind everything, drifting very slowly */
+  .backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .backdrop .photo {
+    position: absolute;
+    inset: -5%;
+    background: url("background.jpg") center 62% / cover no-repeat;
+    transform: scale(1.04);
+    transform-origin: 40% 55%;
+  }
+  .backdrop::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 55% at 50% 46%, var(--wash-core), transparent 78%),
+      linear-gradient(var(--wash), var(--wash));
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .backdrop .photo { animation: photo-drift 48s ease-in-out infinite alternate; }
+  }
+  @keyframes photo-drift {
+    from { transform: scale(1.04) translate3d(0, 0, 0); }
+    to   { transform: scale(1.12) translate3d(-1.5%, -1%, 0); }
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: clamp(3rem, 10vh, 7rem) 2rem;
+  }
+
+  .card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    text-align: center;
+    max-width: 40rem;
+    width: 100%;
+    margin-inline: auto;
+  }
+
+  .mark {
+    width: 4.5rem;
+    height: 4.5rem;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 2.25rem;
+    line-height: 1;
+    color: var(--accent);
+    padding-bottom: 0.2rem;
+  }
+
+  .title-group { display: flex; flex-direction: column; gap: 0.85rem; }
+
+  h1 {
+    margin: 0;
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(2.6rem, 9vw, 5.25rem);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  h1 .the {
+    display: block;
+    font-style: italic;
+    font-size: 0.42em;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+    margin-bottom: 0.25em;
+  }
+
+  .place {
+    margin: 0;
+    font-size: 0.8rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.32em;
+    color: var(--muted);
+  }
+
+  .tide {
+    width: min(22rem, 100%);
+    height: 1.25rem;
+    overflow: hidden;
+    color: var(--accent);
+  }
+  .tide svg { display: block; width: 200%; height: 100%; }
+  .tide path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+  .tide .back { opacity: 0.35; }
+  @media (prefers-reduced-motion: no-preference) {
+    .tide svg { animation: drift 14s linear infinite; }
+  }
+  @keyframes drift { to { transform: translateX(-50%); } }
+
+  .coords {
+    margin: 0;
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .welcome {
+    margin: 0.5rem 0 0;
+    max-width: 30rem;
+    font-family: var(--display);
+    font-style: italic;
+    font-size: clamp(1.1rem, 2.6vw, 1.3rem);
+    line-height: 1.6;
+    color: var(--ink);
+    text-wrap: pretty;
+  }
+
+  .contact-btn {
+    margin-top: 0.5rem;
+    font-family: var(--body);
+    font-size: 0.78rem;
+    font-weight: 400;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: var(--wash-core);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    padding: 0.85rem 2rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  .contact-btn:hover { background: var(--tint); }
+  .contact-btn:focus-visible,
+  .field input:focus-visible,
+  .field textarea:focus-visible,
+  .send:focus-visible,
+  .close:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  dialog {
+    width: min(30rem, calc(100% - 32px));
+    max-height: calc(100% - 32px);
+    overflow: auto;
+    margin: auto;
+    padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    box-shadow: 0 24px 60px -20px rgba(15, 30, 35, 0.35);
+  }
+  dialog::backdrop { background: rgba(15, 28, 33, 0.38); backdrop-filter: blur(2px); }
+
+  .dialog-inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 2.25rem clamp(1.25rem, 5vw, 2.25rem) 2rem;
+  }
+  .dialog-inner h2 {
+    margin: 0;
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 1.9rem;
+    line-height: 1.15;
+  }
+  .dialog-inner .lede { margin: -0.5rem 0 0; color: var(--muted); font-size: 0.95rem; }
+  .close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 2.25rem;
+    height: 2.25rem;
+    display: grid;
+    place-items: center;
+    background: transparent;
+    border: 0;
+    border-radius: 50%;
+    color: var(--muted);
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .close:hover { background: var(--tint); color: var(--ink); }
+
+  form { display: flex; flex-direction: column; gap: 1rem; }
+  .field { display: flex; flex-direction: column; gap: 0.35rem; }
+  .field label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .field input,
+  .field textarea {
+    font: inherit;
+    font-weight: 400;
+    font-size: 1rem;
+    color: var(--ink);
+    background: var(--field);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 0.7rem 0.8rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .field textarea { min-height: 8rem; resize: vertical; line-height: 1.5; }
+  .honey { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+  .send {
+    align-self: flex-start;
+    font-family: var(--body);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--bg);
+    background: var(--ink);
+    border: 1px solid var(--ink);
+    border-radius: 999px;
+    padding: 0.85rem 1.75rem;
+    cursor: pointer;
+  }
+  .send:disabled { opacity: 0.55; cursor: progress; }
+  .status { margin: 0; font-size: 0.95rem; color: var(--ink); min-height: 1.5em; }
+  .status.is-error { color: var(--error); }
+
+  footer {
+    margin-top: 3rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.4rem 1.25rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+</style>
+<style>body{margin:0}</style>
+</head>
+<body>
+<div class="backdrop" aria-hidden="true"><div class="photo"></div></div>
+<main class="page">
+  <div class="card">
+    <div class="mark" aria-hidden="true">D</div>
+
+    <div class="title-group">
+      <h1><span class="the">The</span> Davis Family</h1>
+      <p class="place">Wilmington, North Carolina</p>
+    </div>
+
+    <div class="tide" aria-hidden="true">
+      <svg viewBox="0 0 2400 20" preserveAspectRatio="none">
+        <path class="back" d="M0 12 Q100 4 200 12 T400 12 T600 12 T800 12 T1000 12 T1200 12 T1400 12 T1600 12 T1800 12 T2000 12 T2200 12 T2400 12"/>
+        <path d="M0 10 Q75 3 150 10 T300 10 T450 10 T600 10 T750 10 T900 10 T1050 10 T1200 10 T1350 10 T1500 10 T1650 10 T1800 10 T1950 10 T2100 10 T2250 10 T2400 10"/>
+      </svg>
+    </div>
+
+    <p class="coords">34.2257° N &nbsp;·&nbsp; 77.9447° W</p>
+
+    <button type="button" class="contact-btn" id="open-contact" aria-haspopup="dialog">Get in touch</button>
+  </div>
+
+  <footer>
+    <span>© 2026 The Davis Family</span>
+    <span>fourdavises.com</span>
+  </footer>
+</main>
+
+<dialog id="contact" aria-labelledby="contact-title">
+  <div class="dialog-inner">
+    <button type="button" class="close" id="close-contact" aria-label="Close">×</button>
+    <h2 id="contact-title">Send us a note</h2>
+    <p class="lede">We’d love to hear from you.</p>
+
+    <form id="contact-form" action="https://formsubmit.co/jordan@atlanticmarine.com" method="POST" data-endpoint="https://formsubmit.co/ajax/jordan@atlanticmarine.com" novalidate>
+      <input type="hidden" name="_subject" value="New message from fourdavises.com">
+      <input type="hidden" name="_template" value="table">
+      <div class="honey" aria-hidden="true">
+        <label for="contact-honey">Leave this empty</label>
+        <input type="text" id="contact-honey" name="_honey" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="field">
+        <label for="contact-name">Name</label>
+        <input type="text" id="contact-name" name="name" autocomplete="name" required>
+      </div>
+      <div class="field">
+        <label for="contact-email">Email</label>
+        <input type="email" id="contact-email" name="email" autocomplete="email" required>
+      </div>
+      <div class="field">
+        <label for="contact-message">Message</label>
+        <textarea id="contact-message" name="message" required></textarea>
+      </div>
+
+      <button type="submit" class="send" id="contact-send">Send message</button>
+      <p class="status" id="contact-status" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</dialog>
+
+<script>
+(function () {
+  var dlg = document.getElementById('contact');
+  var form = document.getElementById('contact-form');
+  var status = document.getElementById('contact-status');
+  var send = document.getElementById('contact-send');
+
+  function setStatus(text, isError) {
+    status.textContent = text;
+    status.classList.toggle('is-error', !!isError);
+  }
+
+  document.getElementById('open-contact').addEventListener('click', function () {
+    setStatus('');
+    if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
+    document.getElementById('contact-name').focus();
+  });
+  document.getElementById('close-contact').addEventListener('click', function () {
+    if (typeof dlg.close === 'function') dlg.close(); else dlg.removeAttribute('open');
+  });
+  dlg.addEventListener('click', function (e) {
+    if (e.target === dlg && typeof dlg.close === 'function') dlg.close();
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = form.elements.name.value.trim();
+    var email = form.elements.email.value.trim();
+    var message = form.elements.message.value.trim();
+    if (!name || !message) { setStatus('Please add your name and a message.', true); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setStatus('Please enter a valid email address so we can reply.', true); return; }
+
+    var endpoint = form.getAttribute('data-endpoint');
+    if (!endpoint) {
+      setStatus('This is a preview, so nothing was sent. On fourdavises.com, this form delivers your message to our inbox.');
+      return;
+    }
+
+    send.disabled = true;
+    setStatus('Sending…');
+    var data = {};
+    new FormData(form).forEach(function (v, k) { data[k] = v; });
+
+    fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data)
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (res.success === true || res.success === 'true') {
+          form.reset();
+          setStatus('Thank you. Your message has been sent.');
+        } else {
+          setStatus(res.message || 'Your message could not be sent. Please try again in a moment.', true);
+        }
+      })
+      .catch(function () {
+        setStatus('Your message could not be sent. Check your connection and try again.', true);
+      })
+      .then(function () { send.disabled = false; });
+  });
+})();
+</script>
+</body>
+</html>
